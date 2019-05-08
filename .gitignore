@@ -1,5 +1,9 @@
 *.gem
 *.rbc
+*.log
+*.bundle
+.ruby-version
+Makefile
 /.config
 /coverage/
 /InstalledFiles
