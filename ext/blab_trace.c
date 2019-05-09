@@ -71,13 +71,6 @@ inline static int calc_lineno(const rb_iseq_t *iseq, const VALUE *pc)
         /* use pos-1 because PC points next instruction at the beginning of instruction */
         pos--;
     }
-#if VMDEBUG && defined(HAVE_BUILTIN___BUILTIN_TRAP)
-    else {
-        /* SDR() is not possible; that causes infinite loop. */
-        rb_print_backtrace();
-        __builtin_trap();
-    }
-#endif
     return rb_iseq_line_no(iseq, pos);
 }
 
@@ -121,7 +114,7 @@ static void get_path_and_lineno(const rb_execution_context_t *ec, const rb_contr
         const rb_iseq_t *iseq = cfp->iseq;
         *pathp = rb_iseq_path(iseq);
 
-        if (event & (RUBY_EVENT_CLASS | RUBY_EVENT_CALL  | RUBY_EVENT_B_CALL)) {
+        if (event & (RUBY_EVENT_CLASS | RUBY_EVENT_CALL | RUBY_EVENT_B_CALL)) {
             *linep = FIX2INT(rb_iseq_first_lineno(iseq));
         }
         else {
@@ -143,6 +136,14 @@ static void blab_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id
     const rb_execution_context_t *ec = GET_EC();
 
     get_path_and_lineno(ec, ec->cfp, event, &filename, &line);
+
+//    const rb_control_frame_t *cfp = ec->cfp;
+//    cfp = rb_vm_get_ruby_level_next_cfp(ec, ec->cfp);
+//    if (cfp) {
+//        const rb_iseq_t *iseq = cfp->iseq;
+//        printf("\niseq->body->insns_info.line_no\n");
+//        rb_sprintf(iseq->body->insns_info.succ_index_table);
+//    }
 
     if (!klass) {
         rb_ec_frame_method_id_and_class(ec, &id, 0, &klass);

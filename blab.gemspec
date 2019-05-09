@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://rubygems.org/gems/blab"
   s.license     = "MIT"
 
-  s.add_development_dependency("unparser", "~> 0.4")
+  s.add_development_dependency("debase-ruby_core_source", "~> 0.10")
 
   s.extensions = ["ext/extconf.rb"]
 
