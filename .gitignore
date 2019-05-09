@@ -2,6 +2,7 @@
 *.rbc
 *.log
 *.bundle
+*.o
 .ruby-version
 Makefile
 /.config

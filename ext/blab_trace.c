@@ -13,19 +13,19 @@ static rb_callable_method_entry_t *check_method_entry(VALUE obj, int can_be_svar
 #endif
 
     switch (imemo_type(obj)) {
-      case imemo_ment:
-    return (rb_callable_method_entry_t *)obj;
-      case imemo_cref:
-    return NULL;
-      case imemo_svar:
-    if (can_be_svar) {
-        return check_method_entry(((struct vm_svar *)obj)->cref_or_me, FALSE);
-    }
-      default:
+        case imemo_ment:
+            return (rb_callable_method_entry_t *)obj;
+        case imemo_cref:
+            return NULL;
+        case imemo_svar:
+            if (can_be_svar) {
+                return check_method_entry(((struct vm_svar *)obj)->cref_or_me, FALSE);
+            }
+        default:
 #if VM_CHECK_MODE > 0
-    rb_bug("check_method_entry: svar should not be there:");
+            rb_bug("check_method_entry: svar should not be there:");
 #endif
-    return NULL;
+            return NULL;
     }
 }
 
@@ -36,8 +36,8 @@ MJIT_STATIC const rb_callable_method_entry_t *rb_vm_frame_method_entry(const rb_
     rb_callable_method_entry_t *me;
 
     while (!VM_ENV_LOCAL_P(ep)) {
-    if ((me = check_method_entry(ep[VM_ENV_DATA_INDEX_ME_CREF], FALSE)) != NULL) return me;
-    ep = VM_ENV_PREV_EP(ep);
+        if ((me = check_method_entry(ep[VM_ENV_DATA_INDEX_ME_CREF], FALSE)) != NULL) return me;
+        ep = VM_ENV_PREV_EP(ep);
     }
 
     return check_method_entry(ep[VM_ENV_DATA_INDEX_ME_CREF], TRUE);
@@ -49,13 +49,13 @@ int rb_vm_control_frame_id_and_class(const rb_control_frame_t *cfp, ID *idp, ID 
     const rb_callable_method_entry_t *me = rb_vm_frame_method_entry(cfp);
 
     if (me) {
-    if (idp) *idp = me->def->original_id;
-    if (called_idp) *called_idp = me->called_id;
-    if (klassp) *klassp = me->owner;
-    return TRUE;
+        if (idp) *idp = me->def->original_id;
+        if (called_idp) *called_idp = me->called_id;
+        if (klassp) *klassp = me->owner;
+        return TRUE;
     }
     else {
-    return FALSE;
+        return FALSE;
     }
 }
 
@@ -84,17 +84,17 @@ inline static int calc_lineno(const rb_iseq_t *iseq, const VALUE *pc)
 int rb_vm_get_sourceline(const rb_control_frame_t *cfp)
 {
     if (VM_FRAME_RUBYFRAME_P(cfp) && cfp->iseq) {
-    const rb_iseq_t *iseq = cfp->iseq;
-    int line = calc_lineno(iseq, cfp->pc);
-    if (line != 0) {
-        return line;
+        const rb_iseq_t *iseq = cfp->iseq;
+        int line = calc_lineno(iseq, cfp->pc);
+        if (line != 0) {
+            return line;
+        }
+        else {
+            return FIX2INT(rb_iseq_first_lineno(iseq));
+        }
     }
     else {
-        return FIX2INT(rb_iseq_first_lineno(iseq));
-    }
-    }
-    else {
-    return 0;
+        return 0;
     }
 }
 
@@ -109,8 +109,7 @@ static const char * get_event_name(rb_event_flag_t event)
       case RUBY_EVENT_C_CALL:   return "c-call";
       case RUBY_EVENT_C_RETURN: return "c-return";
       case RUBY_EVENT_RAISE:    return "raise";
-      default:
-    return "unknown";
+      default:                  return "unknown";
     }
 }
 
@@ -119,25 +118,23 @@ static void get_path_and_lineno(const rb_execution_context_t *ec, const rb_contr
     cfp = rb_vm_get_ruby_level_next_cfp(ec, cfp);
 
     if (cfp) {
-    const rb_iseq_t *iseq = cfp->iseq;
-    *pathp = rb_iseq_path(iseq);
+        const rb_iseq_t *iseq = cfp->iseq;
+        *pathp = rb_iseq_path(iseq);
 
-    if (event & (RUBY_EVENT_CLASS |
-                RUBY_EVENT_CALL  |
-                RUBY_EVENT_B_CALL)) {
-        *linep = FIX2INT(rb_iseq_first_lineno(iseq));
+        if (event & (RUBY_EVENT_CLASS | RUBY_EVENT_CALL  | RUBY_EVENT_B_CALL)) {
+            *linep = FIX2INT(rb_iseq_first_lineno(iseq));
+        }
+        else {
+            *linep = rb_vm_get_sourceline(cfp);
+        }
     }
     else {
-        *linep = rb_vm_get_sourceline(cfp);
-    }
-    }
-    else {
-    *pathp = Qnil;
-    *linep = 0;
+        *pathp = Qnil;
+        *linep = 0;
     }
 }
 
-static void call_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id, VALUE klass)
+static void blab_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id, VALUE klass)
 {
     int line;
     VALUE filename;
@@ -148,16 +145,16 @@ static void call_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id
     get_path_and_lineno(ec, ec->cfp, event, &filename, &line);
 
     if (!klass) {
-    rb_ec_frame_method_id_and_class(ec, &id, 0, &klass);
+        rb_ec_frame_method_id_and_class(ec, &id, 0, &klass);
     }
 
     if (klass) {
-    if (RB_TYPE_P(klass, T_ICLASS)) {
-        klass = RBASIC(klass)->klass;
-    }
-    else if (FL_TEST(klass, FL_SINGLETON)) {
-        klass = rb_ivar_get(klass, id__attached__);
-    }
+        if (RB_TYPE_P(klass, T_ICLASS)) {
+            klass = RBASIC(klass)->klass;
+        }
+        else if (FL_TEST(klass, FL_SINGLETON)) {
+            klass = rb_ivar_get(klass, id__attached__);
+        }
     }
 
     argv[0] = eventname;
@@ -172,7 +169,7 @@ static void call_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id
 
 static VALUE rb_blab_trace(VALUE obj, VALUE trace)
 {
-    rb_remove_event_hook(call_trace_func);
+    rb_remove_event_hook(blab_trace_func);
 
     if (NIL_P(trace)) {
         return Qnil;
@@ -182,7 +179,7 @@ static VALUE rb_blab_trace(VALUE obj, VALUE trace)
         rb_raise(rb_eTypeError, "trace_func needs to be Proc");
     }
 
-    rb_add_event_hook(call_trace_func, RUBY_EVENT_ALL, trace);
+    rb_add_event_hook(blab_trace_func, RUBY_EVENT_ALL, trace);
     return trace;
 }
 
