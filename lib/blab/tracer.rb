@@ -7,32 +7,14 @@ module Blab
     FILE_NAME = /.+\/blab\.rb$/
     C_CALLS = ["c-call", "c-return"].freeze
 
-    # TODO: skip this?
-    def files_map
-      @files_map ||= Hash.new do |h, f|
-        h[f] = File.readlines(f)
-      end
-    end
-
-    def defined_vars
-      @defined_vars ||= {}
-    end
-
     def reset
       @files_map && @files_map.keys.each { |key| @files_map.delete(key) }
       @defined_vars = {}
     end
 
-    def source_line(file, line)
-      begin
-        files_map[file][line - 1]
-      rescue
-        nil
-      end
-    end
-
-    def trace(local_vars, logger: Blab::Config.logger, datetime_format: Blab::Config.datetime_format)
-      proc { |event, file, line, id, binding, classname|
+    def trace(local_vars)
+      proc { |event, file, line, id, binding, classname, ru_maxss|
+          # ru_maxss is in bytes on Mac OS X (Darwin), but in kilobytes on BSD and Linux
           next if file =~ FILE_NAME
           # TODO: add option to skip C-calls
           # TODO: add option to loop only through the original method
@@ -76,9 +58,45 @@ module Blab
             final << [" ".ljust(12), " ".ljust(7), (file_lines[i+1] || " ").ljust(40), " "*classname.to_s.size, (code_lines[i+1] || " ").ljust(120)].join(" ")
           end
 
+          puts "ru_maxss: #{ru_maxss}"
+
           logger.info(final.join("\n"))
           #puts defined_vars.inspect
         }
+    end
+
+    private
+
+    def logger
+      Blab::Config.logger
+    end
+
+    def datetime_format
+      Blab::Config.datetime_format
+    end
+
+    def osx?
+      (/darwin/ =~ RUBY_PLATFORM) != nil
+    end
+
+    def source_line(file, line)
+      begin
+        files_map[file][line - 1]
+      rescue
+        nil
+      end
+    end
+
+    # TODO: skip this?
+    # TODO: show all relevant file-lines?
+    def files_map
+      @files_map ||= Hash.new do |h, f|
+        h[f] = File.readlines(f)
+      end
+    end
+
+    def defined_vars
+      @defined_vars ||= {}
     end
   end
 end

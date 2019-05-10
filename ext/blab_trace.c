@@ -132,18 +132,14 @@ static void blab_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id
     int line;
     VALUE filename;
     VALUE eventname = rb_str_new2(get_event_name(event));
-    VALUE argv[6];
+    VALUE argv[7];
     const rb_execution_context_t *ec = GET_EC();
+
+    struct rusage r_usage;
+    getrusage(RUSAGE_SELF,&r_usage);
 
     get_path_and_lineno(ec, ec->cfp, event, &filename, &line);
 
-//    const rb_control_frame_t *cfp = ec->cfp;
-//    cfp = rb_vm_get_ruby_level_next_cfp(ec, ec->cfp);
-//    if (cfp) {
-//        const rb_iseq_t *iseq = cfp->iseq;
-//        printf("\niseq->body->insns_info.line_no\n");
-//        rb_sprintf(iseq->body->insns_info.succ_index_table);
-//    }
 
     if (!klass) {
         rb_ec_frame_method_id_and_class(ec, &id, 0, &klass);
@@ -164,8 +160,9 @@ static void blab_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id
     argv[3] = id ? ID2SYM(id) : Qnil;
     argv[4] = (self && (filename != Qnil)) ? rb_binding_new() : Qnil;
     argv[5] = klass ? klass : Qnil;
+    argv[6] = INT2FIX(r_usage.ru_maxrss);
 
-    rb_proc_call_with_block(proc, 6, argv, Qnil);
+    rb_proc_call_with_block(proc, 7, argv, Qnil);
 }
 
 static VALUE rb_blab_trace(VALUE obj, VALUE trace)
