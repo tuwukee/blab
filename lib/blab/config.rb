@@ -8,16 +8,18 @@ module Blab
 
     DATETIME_FORMAT = "%H:%M:%S.%L"
 
-    attr_writer :logger, :datetime_format
+    attr_writer :logger, :datetime_format, :log_output
 
     def logger
       @logger ||= begin
-        logger = Logger.new(STDOUT)
-        logger.formatter = proc do |severity, datetime, progname, msg|
-          "#{datetime.strftime(datetime_format)}: #{msg}\n"
-        end
+        logger = Logger.new(log_output)
+        logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
         logger
       end
+    end
+
+    def log_output
+      @log_output ||= STDOUT
     end
 
     def datetime_format

@@ -17,6 +17,7 @@ module Blab
           old_m.bind(self).call(*args)
         ensure
           blab_trace(nil)
+          Blab::Tracer.reset
         end
       end
     end
