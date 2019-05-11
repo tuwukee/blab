@@ -34,7 +34,7 @@ class Printer
         (strings[j][0][i] || "").ljust(strings[j][1])
       end.join(" ")
     end
-    logger.info final.join("\n")
+    logger.info(final.join("\n"))
   end
 
   def file_lines(options = {})
@@ -52,9 +52,14 @@ class Printer
     end
   end
 
+  # TODO: format output
   def ru_maxss(options = {})
     val = options[:ru_maxss].to_s
     width = options[:width] || DEFAULT_MAX_RSS_WIDTH
     [val.scan(/.{#{width}}|.+/), width]
+  end
+
+  def osx?
+    @osx ||= (/darwin/ =~ RUBY_PLATFORM) != nil
   end
 end

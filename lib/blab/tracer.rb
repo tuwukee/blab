@@ -62,10 +62,6 @@ module Blab
       Blab::Config.datetime_format
     end
 
-    def osx?
-      (/darwin/ =~ RUBY_PLATFORM) != nil
-    end
-
     def source_line(file, line)
       begin
         files_map[file][line - 1]

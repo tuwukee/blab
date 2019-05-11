@@ -140,7 +140,6 @@ static void blab_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id
 
     get_path_and_lineno(ec, ec->cfp, event, &filename, &line);
 
-
     if (!klass) {
         rb_ec_frame_method_id_and_class(ec, &id, 0, &klass);
     }

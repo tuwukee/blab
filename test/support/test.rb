@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require_relative "blab"
+require_relative "../../lib/blab"
 require "set"
 
 class Y
