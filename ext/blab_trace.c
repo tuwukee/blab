@@ -135,8 +135,9 @@ static void blab_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id
     VALUE argv[7];
     const rb_execution_context_t *ec = GET_EC();
 
+    // RUSAGE_SELF/RUSAGE_CHILDREN/RUSAGE_THREAD
     struct rusage r_usage;
-    getrusage(RUSAGE_SELF,&r_usage);
+    getrusage(RUSAGE_SELF, &r_usage);
 
     get_path_and_lineno(ec, ec->cfp, event, &filename, &line);
 
@@ -159,7 +160,7 @@ static void blab_trace_func(rb_event_flag_t event, VALUE proc, VALUE self, ID id
     argv[3] = id ? ID2SYM(id) : Qnil;
     argv[4] = (self && (filename != Qnil)) ? rb_binding_new() : Qnil;
     argv[5] = klass ? klass : Qnil;
-    argv[6] = INT2FIX(r_usage.ru_maxrss);
+    argv[6] = INT2FIX(r_usage.ru_maxrss); // maximum resident set size
 
     rb_proc_call_with_block(proc, 7, argv, Qnil);
 }

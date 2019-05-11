@@ -21,6 +21,14 @@ module Blab
       end
     end
 
-    # TODO: with_blab
+    def with_blab
+      begin
+        blab_trace(Blab::Tracer.trace)
+        yield
+      ensure
+        blab_trace(nil)
+        Blab::Tracer.reset
+      end
+    end
   end
 end
