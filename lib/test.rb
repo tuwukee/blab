@@ -17,7 +17,7 @@ class Y
     end
     se = Set.new
     hello(
-      se,
+      a,
       a,
       b
     )

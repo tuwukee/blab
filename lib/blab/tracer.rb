@@ -28,6 +28,7 @@ module Blab
             val = context.local_variable_get(v)
             old_v = defined_vars[v]
             if val != old_v
+              # TODO: what if the var is too big
               logger.info("Var......... #{v}=#{val}")
               defined_vars[v] = val
             end

@@ -8,15 +8,15 @@ module Blab
 
     DATETIME_FORMAT = "%H:%M:%S.%L"
 
-    DEFAULT_OUTPUT = {
-      time:        { order: 1, width: 12 },
-      event:       { order: 2, width: 6 },
-      file_lines:  { order: 3, width: 50 },
-      class_name:  { order: 4, width: 5 },
-      method_name: { order: 5, width: 5 },
-      ru_maxss:    { order: 6, width: 10 },
-      code_lines:  { order: 7, width: 100 },
-    }.freeze
+    DEFAULT_OUTPUT = [
+      { type: :time, order: 1, width: 12 },
+      { type: :event, order: 2, width: 6 },
+      { type: :file_lines, order: 3, width: 60 },
+      { type: :class_name, order: 4, width: 5 },
+      { type: :method_name, order: 5, width: 10 },
+      { type: :ru_maxss, order: 6, width: 10 },
+      { type: :code_lines, order: 7, width: 40 },
+    ].freeze
 
     attr_writer :logger, :datetime_format, :log_output, :trace_c_calls, :output_config
 
@@ -33,7 +33,7 @@ module Blab
     end
 
     def output_config
-      (@output_order || DEFAULT_OUTPUT).sort { |(k, v)| -v[:order] }.map { |(k, v)| [k, v[:width]] }
+      (@output_order || DEFAULT_OUTPUT).sort_by { |h| h[:order] }.map! { |h| [h[:type], h[:width]] }
     end
 
     def datetime_format

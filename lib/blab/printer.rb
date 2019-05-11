@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Printer
-  DEFAULT_CLASS_NAME_WIDTH = 10
+  DEFAULT_CLASS_NAME_WIDTH = 5
   DEFAULT_CODE_LINES_WIDTH = 120
   DEFAULT_EVENT_WIDTH = 6
   DEFAULT_FILE_LINES_WIDTH = 60
@@ -28,6 +28,7 @@ class Printer
     strings = config.map do |(type, width)|
       send(type, options.merge(width: width))
     end
+    # TODO: do not ljust the last element
     final = strings.map { |e| e.first.length }.max.times.map do |i|
       config.length.times.map do |j|
         (strings[j][0][i] || "").ljust(strings[j][1])
