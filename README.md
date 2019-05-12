@@ -3,7 +3,8 @@
 
 A debugging tool.
 
-The gem allows to trace local variables and memory usage for a specific Ruby code. It's rather experemental and is intended for use in a development environment only. \
+The gem allows to trace local variables and memory usage for Ruby code (MRI 2.6+). \
+It's extremely experemental and is intended for use in a development environment only. \
 Blab is inspired by [PySnooper](https://github.com/cool-RR/PySnooper).
 
 
@@ -150,6 +151,10 @@ output_order = [
 Blab::Config.output_order = output_order
 ```
 By default it doesn't show current class name and method name. You can adjust the width, change the order, skip/add the desired output info.
+
+## Contribution
+
+Fork & Pull Request. 
 
 ## License
 
