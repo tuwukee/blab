@@ -10,7 +10,7 @@ class Y
     b = 30
     d, c = 12, 67
     puts(name)
-    z(2)
+    yo = z(2)
     10.times do |i|
       a += i
       c = 8
@@ -37,4 +37,5 @@ class Y
   end
 end
 
+Blab::Config.original_scope_only = true
 Y.new.x("test")

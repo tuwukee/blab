@@ -28,10 +28,13 @@ class Printer
     strings = config.map do |(type, width)|
       send(type, options.merge(width: width))
     end
-    # TODO: do not ljust the last element
+
+    config_length = config.length
     final = strings.map { |e| e.first.length }.max.times.map do |i|
-      config.length.times.map do |j|
-        (strings[j][0][i] || "").ljust(strings[j][1])
+      config_length.times.map do |j|
+        str =  strings[j][0][i] || ""
+        # TODO: do not ljust the last element
+        config_length == (j + 1) ? str : str.ljust(strings[j][1])
       end.join(" ")
     end
     logger.info(final.join("\n"))

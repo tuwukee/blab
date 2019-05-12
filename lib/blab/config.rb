@@ -15,14 +15,16 @@ module Blab
       { type: :class_name, order: 4, width: 5 },
       { type: :method_name, order: 5, width: 10 },
       { type: :ru_maxss, order: 6, width: 10 },
-      { type: :code_lines, order: 7, width: 40 },
+      { type: :code_lines, order: 7, width: 120 },
     ].freeze
 
     attr_writer :logger,
                 :datetime_format,
                 :log_output,
                 :trace_c_calls,
-                :output_config
+                :output_config,
+                :output_order,
+                :original_scope_only
 
     def logger
       @logger ||= begin
@@ -46,6 +48,10 @@ module Blab
 
     def trace_c_calls?
       @trace_c_calls ||= false
+    end
+
+    def original_scope_only?
+      @original_scope_only ||= false
     end
   end
 end

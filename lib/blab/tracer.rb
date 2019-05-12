@@ -15,25 +15,23 @@ module Blab
     def trace
       proc do |event, file, line, method_name, context, class_name, ru_maxss|
         next if file =~ FILE_NAME
-        # TODO: add an option to skip C-calls
-        # TODO: add an option to loop only through the original method context
-        next if C_CALLS.include?(event)
-
-        time = Time.now.strftime(datetime_format)
+        next if skip_c_calls? && C_CALLS.include?(event)
+        next if original_scope_only? && !original_scope?(file, method_name, class_name)
 
         context.local_variables.each do |v|
-          if context.local_variable_defined?(v)
-            val = context.local_variable_get(v)
-            old_v = defined_vars[v]
-            if val != old_v
-              formatted_output(v, val)
-              defined_vars[v] = val
-            end
-          end
+          next unless context.local_variable_defined?(v)
+
+          val = context.local_variable_get(v)
+          old_v = defined_vars[v]
+
+          next if val == old_v
+
+          formatted_output(v, val)
+          defined_vars[v] = val
         end
 
         printer.print(
-          time: time,
+          time: Time.now.strftime(datetime_format),
           event: event,
           file: file,
           line: line,
@@ -59,13 +57,30 @@ module Blab
       Blab::Config.datetime_format
     end
 
-    # TODO: DI
     def formatted_output(key, val)
       logger.info("Var......... #{key}=#{Blab::Formatter.format(val)}")
     end
 
     def defined_vars
       @defined_vars ||= {}
+    end
+
+    def original_scope_only?
+      Blab::Config.original_scope_only?
+    end
+
+    def skip_c_calls?
+      !Blab::Config.trace_c_calls?
+    end
+
+    def original_scope?(file, method_name, class_name)
+      @original_file ||= file
+      @original_method_name ||= method_name
+      @orinal_class_name ||= class_name
+
+      @original_file == file &&
+        @original_method_name == method_name &&
+        @orinal_class_name == class_name
     end
   end
 end
