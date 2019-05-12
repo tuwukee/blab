@@ -3,8 +3,8 @@
 require "mkmf"
 require "debase/ruby_core_source"
 
-if RUBY_VERSION < "2.4"
-  STDERR.print("Ruby version must be 2.4 or older\n")
+if RUBY_VERSION < "2.6"
+  STDERR.print("Ruby version must be 2.6 or older\n")
   exit(1)
 end
 

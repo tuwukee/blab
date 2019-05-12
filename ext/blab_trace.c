@@ -29,7 +29,6 @@ static rb_callable_method_entry_t *check_method_entry(VALUE obj, int can_be_svar
     }
 }
 
-
 MJIT_STATIC const rb_callable_method_entry_t *rb_vm_frame_method_entry(const rb_control_frame_t *cfp)
 {
     const VALUE *ep = cfp->ep;

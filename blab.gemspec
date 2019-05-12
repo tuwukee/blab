@@ -7,7 +7,7 @@ require "blab/version"
 Gem::Specification.new do |s|
   s.name        = "blab"
   s.version     = Blab::VERSION
-  s.date        = "2019-05-01"
+  s.date        = "2019-05-12"
   s.summary     = "Blab"
   s.description = "A debugging tool"
   s.authors     = ["Yulia Oletskaya"]
