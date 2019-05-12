@@ -11,10 +11,10 @@ class Printer
 
   PRINT_FIELDS = [
     :class_name,
-    :code_lines,
     :event,
     :method_name,
-    :time
+    :time,
+    :ru_maxss
   ].freeze
 
   attr_reader :config, :logger
@@ -44,6 +44,13 @@ class Printer
     ["#{file}:#{line}".scan(/.{#{width}}|.+/), width]
   end
 
+  def code_lines(options= {})
+    file  = options[:file]
+    line  = options[:line]
+    width = options[:width] || DEFAULT_CODE_LINES_WIDTH
+    [source_line(file, line).scan(/.{#{width}}|.+/), width]
+  end
+
   PRINT_FIELDS.each do |name|
     define_method(name) do |options = {}|
       val   = options[name]
@@ -52,14 +59,22 @@ class Printer
     end
   end
 
-  # TODO: format output
-  def ru_maxss(options = {})
-    val = options[:ru_maxss].to_s
-    width = options[:width] || DEFAULT_MAX_RSS_WIDTH
-    [val.scan(/.{#{width}}|.+/), width]
+  def reset_files
+    @files_map && @files_map.keys.each { |key| @files_map.delete(key) }
   end
 
-  def osx?
-    @osx ||= (/darwin/ =~ RUBY_PLATFORM) != nil
+  def files_map
+    @files_map ||= Hash.new do |h, f|
+      h[f] = File.readlines(f)
+    end
+  end
+
+  # TODO: show all relevant file-lines
+  def source_line(file, line)
+    begin
+      files_map[file][line - 1]
+    rescue
+      "source is unavailable"
+    end
   end
 end

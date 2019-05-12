@@ -18,7 +18,11 @@ module Blab
       { type: :code_lines, order: 7, width: 40 },
     ].freeze
 
-    attr_writer :logger, :datetime_format, :log_output, :trace_c_calls, :output_config
+    attr_writer :logger,
+                :datetime_format,
+                :log_output,
+                :trace_c_calls,
+                :output_config
 
     def logger
       @logger ||= begin
@@ -33,7 +37,7 @@ module Blab
     end
 
     def output_config
-      (@output_order || DEFAULT_OUTPUT).sort_by { |h| h[:order] }.map! { |h| [h[:type], h[:width]] }
+      @output_config ||= (@output_order || DEFAULT_OUTPUT).sort_by { |h| h[:order] }.map! { |h| [h[:type], h[:width]] }
     end
 
     def datetime_format

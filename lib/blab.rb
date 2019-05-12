@@ -2,6 +2,7 @@
 
 require_relative "../ext/blab_trace"
 require_relative "blab/config"
+require_relative "blab/formatter"
 require_relative "blab/printer"
 require_relative "blab/tracer"
 
