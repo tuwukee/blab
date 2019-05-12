@@ -37,5 +37,27 @@ class Y
   end
 end
 
-Blab::Config.original_scope_only = true
-Y.new.x("test")
+# Blab::Config.original_scope_only = true
+
+class Test
+  include Blab
+
+  def shuffle(arr)
+    for n in 0...arr.size
+      targ = n + rand(arr.size - n)
+      arr[n], arr[targ] = arr[targ], arr[n] if n != targ
+    end
+  end
+
+  def pairs(a, b)
+    with_blab do
+      a << "Insane"
+      shuffle(b)
+    end
+    b.each { |x| shuffle(a); a.each { |y| print y, " ", x, ".\n" } }
+  end
+end
+Blab::Config.log_output = "blab.log"
+
+Test.new.pairs(["Bored", "Curious"], ["cat", "frog"])
+

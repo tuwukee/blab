@@ -4,7 +4,7 @@
 A debugging tool.
 
 The gem allows to trace local variables and memory usage for a specific Ruby code. It's rather experemental and is intended for use in a development environment only. \
-Blab is inspired by [PySnooper](https://github.com/cool-RR/PySnooper). 
+Blab is inspired by [PySnooper](https://github.com/cool-RR/PySnooper).
 
 
 ## Installation
@@ -30,7 +30,7 @@ require "blab"
 
 class Test
   include Blab
-  
+
   blab def longest_rep(str)
     max = str.chars.chunk(&:itself).map(&:last).max_by(&:size)
     max ? [max[0], max.size] : ["", 0]
@@ -118,7 +118,7 @@ Blab::Config.datetime_format = "%H:%M:%S.%L"
 Custom logger:
 
 ```ruby
-Blab::Config.logger = NyCustomLogger.new
+Blab::Config.logger = MyCustomLogger.new
 ```
 
 Trace C calls your program makes from Ruby:

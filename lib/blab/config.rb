@@ -11,11 +11,11 @@ module Blab
     DEFAULT_OUTPUT = [
       { type: :time, order: 1, width: 12 },
       { type: :event, order: 2, width: 6 },
-      { type: :file_lines, order: 3, width: 60 },
-      { type: :class_name, order: 4, width: 5 },
-      { type: :method_name, order: 5, width: 10 },
-      { type: :ru_maxss, order: 6, width: 10 },
-      { type: :code_lines, order: 7, width: 120 },
+      { type: :file_lines, order: 3, width: 50 },
+      #{ type: :class_name, order: 4, width: 10 },
+      #{ type: :method_name, order: 5, width: 12 },
+      { type: :ru_maxss, order: 4, width: 12 },
+      { type: :code_lines, order: 5, width: 120 }
     ].freeze
 
     attr_writer :logger,
