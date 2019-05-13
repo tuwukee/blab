@@ -24,7 +24,7 @@ bundle install
 
 ## Usage
 
-Include `Blab` module and the destionation class and use the `blab` decorator in front of a method defenition.
+Include `Blab` module in the destionation class and use the `blab` decorator in front of a method defenition.
 
 ```ruby
 require "blab"
