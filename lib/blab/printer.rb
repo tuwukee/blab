@@ -58,7 +58,7 @@ module Blab
     PRINT_FIELDS.each do |name|
       define_method(name) do |options = {}|
         val   = options[name]
-        width = options[:width] || const_get("DEFAULT_#{name.upcase}_WIDTH")
+        width = options[:width] || self.class.const_get("DEFAULT_#{name.upcase}_WIDTH")
         [val.scan(/.{#{width}}|.+/), width]
       end
     end
