@@ -3,8 +3,6 @@ require_relative "../../lib/blab"
 require "set"
 
 class Y
-  include Blab
-
   blab def x(name, &block)
     a = 15
     b = 30
@@ -40,8 +38,6 @@ end
 # Blab::Config.original_scope_only = true
 
 class Test
-  include Blab
-
   def shuffle(arr)
     for n in 0...arr.size
       targ = n + rand(arr.size - n)
@@ -50,14 +46,11 @@ class Test
   end
 
   def pairs(a, b)
-    with_blab do
-      a << "Insane"
-      shuffle(b)
-    end
+    a << "Insane"
+    shuffle(b)
     b.each { |x| shuffle(a); a.each { |y| print y, " ", x, ".\n" } }
   end
 end
-Blab::Config.log_output = "blab.log"
 
 Test.new.pairs(["Bored", "Curious"], ["cat", "frog"])
 

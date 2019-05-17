@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
   s.add_dependency("debase-ruby_core_source", "~> 0.10")
+  s.add_development_dependency("minitest", "~> 5.11")
 
   s.extensions = ["ext/extconf.rb"]
 

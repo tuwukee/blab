@@ -9,7 +9,7 @@ require_relative "blab/tracer"
 module Blab
   def self.included(base)
     base.define_singleton_method(:blab) do |name|
-      old_m = base.instance_method(name)
+      old_m = self.instance_method(name)
 
       base.send(:define_method, name) do |*args|
         begin
@@ -33,3 +33,5 @@ module Blab
     end
   end
 end
+
+BasicObject.include(Blab)
