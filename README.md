@@ -147,6 +147,11 @@ Blab::Config.output_order = output_order
 ```
 By default it doesn't show current class name and method name. You can adjust the width, change the order, skip/add the desired output info.
 
+## Contributing
+
+Fork & Pull Request. \
+Run the tests via `rake`.
+
 ## License
 
 MIT

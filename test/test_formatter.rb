@@ -9,7 +9,6 @@ class TestFormatter < Minitest::Test
   end
 
   def test_array_formet
-    formatter =
     arr1 = Array.new(3, 5)
     arr2 = Array.new(100, 10)
 

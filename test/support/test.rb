@@ -46,8 +46,10 @@ class Test
   end
 
   def pairs(a, b)
-    a << "Insane"
-    shuffle(b)
+    with_blab do
+      a << "Insane"
+      shuffle(b)
+    end
     b.each { |x| shuffle(a); a.each { |y| print y, " ", x, ".\n" } }
   end
 end
