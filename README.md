@@ -24,14 +24,12 @@ bundle install
 
 ## Usage
 
-Include `Blab` module in the destionation class and use the `blab` decorator in front of a method defenition.
+Use the `blab` decorator in front of a method defenition.
 
 ```ruby
 require "blab"
 
 class Test
-  include Blab
-
   blab def longest_rep(str)
     max = str.chars.chunk(&:itself).map(&:last).max_by(&:size)
     max ? [max[0], max.size] : ["", 0]
@@ -60,8 +58,6 @@ The gem allows to wrap only a piece of code in a block:
 
 ```ruby
 class Test
-  include Blab
-
   def shuffle(arr)
     for n in 0...arr.size
       targ = n + rand(arr.size - n)
@@ -154,7 +150,8 @@ By default it doesn't show current class name and method name. You can adjust th
 
 ## Contribution
 
-Fork & Pull Request. 
+Fork & Pull Request. \
+Run the tests via `rake`.
 
 ## License
 

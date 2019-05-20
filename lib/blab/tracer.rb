@@ -58,7 +58,11 @@ module Blab
     end
 
     def formatted_output(key, val)
-      logger.info("Var......... #{key}=#{Blab::Formatter.format(val)}")
+      logger.info("Var......... #{key}=#{formatter.format(val)}")
+    end
+
+    def formatter
+      @formatter ||= Blab::Formatter.new
     end
 
     def defined_vars

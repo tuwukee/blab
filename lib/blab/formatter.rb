@@ -1,18 +1,22 @@
 # frozen_string_literal: true
 
 module Blab
-  module Formatter
-    extend self
-
+  class Formatter
     ELLIPSIS = "..."
-    MAX_LENGTH = 100
+    DEFAULT_MAX_LENGTH = 100
+
+    attr_reader :max_length
+
+    def initialize(max_length = DEFAULT_MAX_LENGTH)
+      @max_length = max_length
+    end
 
     def format(object)
       formatted = prepare_for_inspection(object).inspect
-      return formatted if formatted.length < MAX_LENGTH
+      return formatted if formatted.length < max_length
 
-      beginning = truncate(formatted, 0, MAX_LENGTH / 2)
-      ending = truncate(formatted, -MAX_LENGTH / 2, -1)
+      beginning = truncate(formatted, 0, max_length / 2)
+      ending = truncate(formatted, -max_length / 2, -1)
       "#{beginning}#{ELLIPSIS}#{ending}"
     end
 
