@@ -5,6 +5,7 @@ require_relative "blab/config"
 require_relative "blab/formatter"
 require_relative "blab/printer"
 require_relative "blab/tracer"
+require_relative "blab/version"
 
 module Blab
   def self.included(base)
