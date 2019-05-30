@@ -15,12 +15,9 @@ Gem::Specification.new do |s|
   s.homepage    = "http://rubygems.org/gems/blab"
   s.license     = "MIT"
 
-  s.add_dependency("debase-ruby_core_source", "~> 0.10")
   s.add_development_dependency("minitest", "~> 5.11")
 
-  s.extensions = ["ext/extconf.rb"]
-
-  s.files         = Dir["lib/**/*", "LICENSE", "README.md", "ext/*"]
+  s.files         = Dir["lib/**/*", "LICENSE", "README.md"]
   s.test_files    = Dir["test/*", "test/**/*"]
   s.require_paths = ["lib"]
 end

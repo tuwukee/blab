@@ -14,8 +14,7 @@ module Blab
       :class_name,
       :event,
       :method_name,
-      :time,
-      :ru_maxss
+      :time
     ].freeze
 
     attr_reader :config, :logger
