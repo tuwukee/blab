@@ -3,8 +3,8 @@
 
 A debugging tool.
 
-The gem allows to trace local variables and memory usage for Ruby code (MRI 2.6+). \
-It's extremely experemental and is intended for use in a development environment only. \
+The gem allows to trace local variables and memory usage for Ruby code. \
+It's intended for use in a development environment only. \
 Blab is inspired by [PySnooper](https://github.com/cool-RR/PySnooper).
 
 
@@ -44,15 +44,12 @@ The output to STDOUT:
 
 ```
 Var......... str="cbaaabb"
-18:17:26.042 call   test/support/test.rb:46        13463552       blab def longest_rep(str)
-18:17:26.042 line   test/support/test.rb:47        13508608         max = str.chars.chunk(&:itself).map(&:last).max_by(&:size)
+18:17:26.042 call   test/support/test.rb:46        blab def longest_rep(str)
+18:17:26.042 line   test/support/test.rb:47          max = str.chars.chunk(&:itself).map(&:last).max_by(&:size)
 Var......... max=["a", "a", "a"]
-18:17:26.043 line   test/support/test.rb:48        13516800         max ? [max[0], max.size] : ["", 0]
-18:17:26.043 return test/support/test.rb:49        13516800       end
+18:17:26.043 line   test/support/test.rb:48          max ? [max[0], max.size] : ["", 0]
+18:17:26.043 return test/support/test.rb:49        end
 ```
-
-The output is configurable. Within the example the 4th item in a table is `ru_maxss` - a memory amount used by the Ruby process. The value is in bytes on Mac OS X (Darwin), but in kilobytes on BSD and Linux. In the example it's in bytes and is roughly 13MB total.
-Note, that blab itself adds some overhead, and the program'll take lesser memory running without it.
 
 The gem allows to wrap only a piece of code in a block:
 
@@ -82,20 +79,20 @@ The output:
 ```
 Var......... a=["Bored", "Curious"]
 Var......... b=["cat", "frog"]
-18:38:15.188 line   test/support/test.rb:54        13770752           a << "Insane"
-18:38:15.188 line   test/support/test.rb:55        13807616           shuffle(b)
+18:38:15.188 line   test/support/test.rb:54                   a << "Insane"
+18:38:15.188 line   test/support/test.rb:55                   shuffle(b)
 Var......... arr=["cat", "frog"]
-18:38:15.188 call   test/support/test.rb:45        13807616       def shuffle(arr)
-18:38:15.189 line   test/support/test.rb:46        13807616         for n in 0...arr.size
+18:38:15.188 call   test/support/test.rb:45               def shuffle(arr)
+18:38:15.189 line   test/support/test.rb:46                 for n in 0...arr.size
 Var......... n=0
-18:38:15.189 line   test/support/test.rb:47        13811712           targ = n + rand(arr.size - n)
+18:38:15.189 line   test/support/test.rb:47                   targ = n + rand(arr.size - n)
 Var......... targ=0
-18:38:15.189 line   test/support/test.rb:48        13811712           arr[n], arr[targ] = arr[targ], arr[n] if n != targ
+18:38:15.189 line   test/support/test.rb:48                   arr[n], arr[targ] = arr[targ], arr[n] if n != targ
 Var......... n=1
-18:38:15.189 line   test/support/test.rb:47        13811712           targ = n + rand(arr.size - n)
+18:38:15.189 line   test/support/test.rb:47                   targ = n + rand(arr.size - n)
 Var......... targ=1
-18:38:15.189 line   test/support/test.rb:48        13811712           arr[n], arr[targ] = arr[targ], arr[n] if n != targ
-18:38:15.189 return test/support/test.rb:50        13811712       end
+18:38:15.189 line   test/support/test.rb:48                   arr[n], arr[targ] = arr[targ], arr[n] if n != targ
+18:38:15.189 return test/support/test.rb:50               end
 ```
 
 ## Configuration
@@ -140,7 +137,6 @@ output_order = [
   { type: :file_lines, order: 3, width: 30 },
   { type: :class_name, order: 4, width: 10 },
   { type: :method_name, order: 5, width: 12 },
-  { type: :ru_maxss, order: 6, width: 12 },
   { type: :code_lines, order: 7, width: 120 }
 ]
 
