@@ -38,8 +38,12 @@ module Blab
       @log_output ||= STDOUT
     end
 
+    def output_order
+      @output_order ||= DEFAULT_OUTPUT
+    end
+
     def output_config
-      @output_config ||= (@output_order || DEFAULT_OUTPUT).sort_by { |h| h[:order] }.map! { |h| [h[:type], h[:width]] }
+      @output_config ||= output_order.sort_by { |h| h[:order] }.map! { |h| [h[:type], h[:width]] }
     end
 
     def datetime_format

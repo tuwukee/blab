@@ -12,7 +12,7 @@ module Blab
     base.define_singleton_method(:blab) do |name|
       old_m = self.instance_method(name)
 
-      base.send(:define_method, name) do |*args|
+      self.send(:define_method, name) do |*args|
         begin
           blab_trace(Blab::Tracer.trace)
           old_m.bind(self).call(*args)
