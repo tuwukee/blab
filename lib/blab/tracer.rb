@@ -13,7 +13,7 @@ module Blab
     end
 
     def trace
-      proc do |event, file, line, method_name, context, class_name, ru_maxss|
+      proc do |event, file, line, method_name, context, class_name|
         next if file =~ FILE_NAME
         next if skip_c_calls? && C_CALLS.include?(event)
         next if original_scope_only? && !original_scope?(file, method_name, class_name)
@@ -36,9 +36,7 @@ module Blab
           file: file,
           line: line,
           method_name: method_name.to_s,
-          class_name: class_name.to_s,
-          # ru_maxss is in bytes on Mac OS X (Darwin), but in kilobytes on BSD and Linux
-          ru_maxss: ru_maxss.to_s
+          class_name: class_name.to_s
         )
       end
     end

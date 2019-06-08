@@ -14,7 +14,6 @@ module Blab
       { type: :file_lines, order: 3, width: 50 },
       #{ type: :class_name, order: 4, width: 10 },
       #{ type: :method_name, order: 5, width: 12 },
-      { type: :ru_maxss, order: 4, width: 12 },
       { type: :code_lines, order: 5, width: 120 }
     ].freeze
 

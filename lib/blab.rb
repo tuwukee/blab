@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../ext/blab_trace"
 require_relative "blab/config"
 require_relative "blab/formatter"
 require_relative "blab/printer"
@@ -14,10 +13,10 @@ module Blab
 
       self.send(:define_method, name) do |*args|
         begin
-          blab_trace(Blab::Tracer.trace)
+          set_trace_func(Blab::Tracer.trace)
           old_m.bind(self).call(*args)
         ensure
-          blab_trace(nil)
+          set_trace_func(nil)
           Blab::Tracer.reset
         end
       end
@@ -25,10 +24,10 @@ module Blab
 
     def with_blab
       begin
-        blab_trace(Blab::Tracer.trace)
+        set_trace_func(Blab::Tracer.trace)
         yield
       ensure
-        blab_trace(nil)
+        set_trace_func(nil)
         Blab::Tracer.reset
       end
     end

@@ -12,7 +12,6 @@ class TestPrinter < Minitest::Test
       [:file_lines, 50],
       [:class_name, 12],
       [:method_name, 12],
-      [:ru_maxss, 12],
       [:code_lines, 120]
     ]
     @printer = Blab::Printer.new(@config, @logger)
